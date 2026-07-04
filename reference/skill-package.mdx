@@ -1,5 +1,5 @@
 ---
-title: "Shaping Frame Skill Package Structure"
+title: "Shaping Frame Skill Package: Files and Layer Model"
 sidebarTitle: "Skill Package"
 description: "The shaping-frame.skill archive contains four files that form a layered cognitive frame. Learn what each file does and when Claude reads it."
 ---
@@ -18,12 +18,13 @@ shaping-frame.skill
         └── snapshot.md
 ```
 
-## The four layers
+## The layer model
 
-Each file in the archive occupies a distinct layer of the frame. They are not interchangeable — each is read at a specific moment for a specific purpose.
+The frame operates across five layers. Four of them are files inside the archive. The fifth — the floor — is the custom instruction anchored in userPreferences, which keeps the frame active every turn outside of any file read. Each layer is read at a specific moment for a specific purpose.
 
 | Layer | File | Role | When read |
 |---|---|---|---|
+| Floor | anchor in userPreferences | Always in context every turn | Every turn, without exception |
 | Full frame | `SKILL.md` | Complete operating specification. Verbatim read required. | Active for the entire conversation |
 | Compact reminder | `references/frame.md` | Summary of sources, states, and threshold rules | At session start and on drift risk |
 | Checkpoint checklist | `references/dogana.md` | Step-by-step checklist for threshold crossings | When a checkpoint threshold fires |

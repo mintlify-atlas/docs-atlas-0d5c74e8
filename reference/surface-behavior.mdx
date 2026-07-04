@@ -1,5 +1,5 @@
 ---
-title: "Surface Behavior: When Shaping Frame Emits Output"
+title: "Surface Behavior: Snapshot Triggers in Shaping Frame"
 sidebarTitle: "Surface Behavior"
 description: "Shaping Frame is silent by default. Learn the five surface triggers that produce a snapshot block and how the snapshot ordering rule works."
 ---
@@ -12,7 +12,7 @@ Five observable events in the conversation force a compact snapshot of active tr
 
 - **OP introduces a new constraint or EXT material.** New external material or a new constraint enters the weight space. The snapshot captures what is already in motion before the new element is evaluated alongside it.
 - **OP changes direction or scope.** A direction change may promote, demote, or invalidate elements that were previously gaining weight. The snapshot makes the current state visible before the pivot.
-- **OP asks for orientation.** Explicit requests — "where are we", "what have we decided", "give me a recap" — directly request a surface. The snapshot is the answer.
+- **OP asks for orientation.** Explicit requests — "where are we", "what have we decided", "recap" — directly request a surface. The snapshot is the answer.
 - **A new artifact or spec opens.** When the conversation moves toward producing structural output, what is in motion needs to be visible before that output begins.
 - **The conversation shifts phase.** Moving from shaping to decision, or from decision to writing, is a structural transition. The snapshot captures weight state at the boundary.
 

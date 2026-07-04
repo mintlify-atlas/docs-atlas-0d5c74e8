@@ -1,7 +1,7 @@
 ---
-title: "Running a Working Session with Shaping Frame"
+title: "Running a Complete Working Session with Shaping Frame"
 sidebarTitle: "Working Sessions"
-description: "A practical walkthrough for running a complex Claude working session with Shaping Frame active — from opening a session to approving a decision and writing an artifact."
+description: "A practical walkthrough for running a working session with Shaping Frame active — from opening a session to approving decisions and writing an artifact."
 ---
 
 This guide walks through a complete working session with Shaping Frame active. The frame changes how you interact with Claude: instead of letting ideas accumulate silently, you approve them explicitly. The result is a session where every decision that enters a structural artifact has a clear origin — not accumulated through conversational momentum, but marked by you.
@@ -33,7 +33,7 @@ You say: *"Maybe, that could work."* — The proposal stays **Candidate**. The f
 
 The frame operates every turn but emits output only when something meaningful is happening. Silence is normal — it means the frame is tracking but nothing has crossed a threshold. When it does surface, the event is one of three kinds:
 
-- **A surface trigger fires.** You change direction or scope, import new EXT material, ask where you are ("what have we decided?", "where do we stand?"), open a new artifact, or the session shifts phase (shaping → decision → writing). When this happens, the frame emits a compact snapshot of active Tracked elements before responding to content.
+- **A surface trigger fires.** You introduce a new constraint or EXT material, change direction or scope, ask where you are ("what have we decided?", "where do we stand?"), open a new artifact, or the session shifts phase (shaping → decision → writing). When this happens, the frame emits a compact snapshot of active Tracked elements before responding to content.
 - **A threshold crossing is detected.** An AI proposal that has been cited multiple times starts behaving like a constraint. A model prior is being used as the foundation of a structural decision. EXT material is being treated as operator intent. When this happens, the frame emits a dogana block — a compact checkpoint that makes the crossing visible and asks you to decide.
 - **The pre-write gate fires.** Before Claude writes a spec, creates a reusable document, or modifies a structural artifact, the gate evaluates whether all grounding material is Crystallized. If something unvetted would enter the structure, the frame stops and surfaces.
 
@@ -58,6 +58,8 @@ These actions do not crystallize material:
 | Action | Result |
 |---|---|
 | *"Maybe."* | Stays Candidate — OP hypothesis |
+| *"That works."* | Stays Candidate — ambiguous, not a decision |
+| *"That sounds good."* | Stays Candidate — ambiguous, not a decision |
 | *"That could work."* | Stays Candidate — ambiguous, not a decision |
 | *"I think option A is better."* | Stays Candidate — OP hypothesis |
 | *"Interesting."* | No state change |

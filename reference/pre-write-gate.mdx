@@ -1,7 +1,7 @@
 ---
-title: "Pre-Write Gate: Vetting Before Structural Output"
+title: "Pre-Write Gate: Vetting Before Writing Structural Output"
 sidebarTitle: "Pre-Write Gate"
-description: "The pre-write gate is a Level 3 checkpoint that fires before Claude writes structural artifacts. Learn the gate format, decision rules, and what triggers a hard stop."
+description: "The pre-write gate fires before Claude persists structural artifacts. Learn the gate format, the five decision rules, and what forces a stop."
 ---
 
 The pre-write gate is a special case of the cognitive checkpoint. It fires before Claude persists structural artifacts: modifying files, creating specs, fixing rules, writing reusable documents. The checkpoint operates throughout shaping — during ideation, constraint evaluation, and adversarial review — but the pre-write gate is the hardest enforcement point in the frame. It is where silent accumulation most frequently becomes structural damage, and where a stop is most likely to be required.
@@ -13,7 +13,7 @@ When the pre-write gate fires, Claude produces this block before proceeding:
 ```text
 Target:
 Crystallized:
-In motion (Tracked / Candidate):
+In motion (Tracked/Candidate):
 Quarantined / Needs verification:
 Decision needed:
 ```

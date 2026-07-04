@@ -1,7 +1,7 @@
 ---
-title: "Weight States: From Spark to Crystallized"
+title: "Weight States: Spark, Candidate, Tracked, and Beyond"
 sidebarTitle: "Weight States"
-description: "Shaping Frame tracks material through five primary weight states and three transversal flags. Learn how elements move through the state machine and when flags apply."
+description: "Five primary states and three transversal flags track every element. Learn how Shaping Frame moves material from Spark through Crystallized or Rejected."
 ---
 
 Every piece of material in a session has a current state. Shaping Frame tracks state transitions continuously — not only at write time — and fires checkpoints when material is about to cross an epistemic boundary without operator approval. The state machine has five primary states and three transversal flags. Primary states are mutually exclusive: material is either Spark, Candidate, Tracked, Crystallized, or Rejected at any given moment. Transversal flags apply alongside primary states — an element can be Candidate and Quarantined, or Tracked and Needs verification, at the same time.
@@ -71,10 +71,6 @@ Contaminated material must be decontaminated before being used in persistent, st
 Needs verification applies to material that requires DSK, web, or tool verification before it can ground a factual or technical decision. The flag keeps the session moving while marking the element as unresolved — the flow continues with the assumption marked, as long as it does not crystallize before verification happens.
 
 If verification is not possible in the current context, the element is frozen: it cannot advance state or ground a decision. It must be surfaced at the next surface trigger, regardless of whether the operator has asked about it. Do not downgrade a Needs verification element to Quarantined — the specific reason for the flag must remain visible so that the right verification step can be taken when it becomes available.
-
-<Note>
-Crystallized and Rejected elements are closed — they do not appear in active tracking snapshots. Only Candidate, Tracked, Quarantined, and Needs verification elements are surfaced in the frame's output.
-</Note>
 
 ## Promotion and demotion rules
 
