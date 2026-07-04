@@ -1,0 +1,63 @@
+---
+title: "Surface Behavior: When Shaping Frame Emits Output"
+sidebarTitle: "Surface Behavior"
+description: "Shaping Frame is silent by default. Learn the five surface triggers that produce a snapshot block and how the snapshot ordering rule works."
+---
+
+The frame is active every turn — tracking sources, weight states, threshold proximity, and potential conflicts — but it produces visible output only when something is crossing a threshold or when a surface trigger fires. Silence is the normal and expected state. A session where Shaping Frame emits nothing is not a sign that the frame is inactive; it is a sign that no material has reached a threshold and no surface trigger has occurred.
+
+## Surface triggers
+
+Five observable events in the conversation force a compact snapshot of active tracked elements before Claude responds to content:
+
+- **OP introduces a new constraint or EXT material.** New external material or a new constraint enters the weight space. The snapshot captures what is already in motion before the new element is evaluated alongside it.
+- **OP changes direction or scope.** A direction change may promote, demote, or invalidate elements that were previously gaining weight. The snapshot makes the current state visible before the pivot.
+- **OP asks for orientation.** Explicit requests — "where are we", "what have we decided", "give me a recap" — directly request a surface. The snapshot is the answer.
+- **A new artifact or spec opens.** When the conversation moves toward producing structural output, what is in motion needs to be visible before that output begins.
+- **The conversation shifts phase.** Moving from shaping to decision, or from decision to writing, is a structural transition. The snapshot captures weight state at the boundary.
+
+## The snapshot format
+
+When a surface trigger fires, Claude emits a compact snapshot block before responding to content. The format is defined in `references/snapshot.md`:
+
+```text
+Active tracking:
+- [element] | source | state | next threshold | decision needed?
+
+No active tracking: —
+```
+
+### Fields
+
+**element** — The proposal, constraint, name, or hypothesis being tracked. One line per element.
+
+**source** — `EXT` / `AI` / `MP` / `DSK`. Omit the source field if it does not change how the element is weighted. OP is never tagged or listed as a source in the snapshot.
+
+**state** — `Candidate` / `Tracked` / `Quarantined` / `Needs verification`. Do not list elements in `Crystallized` or `Rejected` state — those states are closed and tracking is complete.
+
+**next threshold** — The nearest crossing from the threshold vocabulary. This is the boundary the element is approaching, not the one it has already crossed.
+
+**decision needed?** — `yes` or `no`. If yes, state what decision is required before the element can advance.
+
+### Example snapshot
+
+```text
+Active tracking:
+- separate auth module | AI | Tracked | local compromise → architecture | yes: OP confirm before opening spec
+- DB schema v2 | EXT | Candidate | proposal → premise | no
+- default timeout 30s | MP | Quarantined | factual hypothesis → technical foundation | yes: verify with DSK before using as constraint
+```
+
+## Ordering rule
+
+When a surface trigger fires, the output follows a fixed sequence:
+
+1. **Snapshot block** — emit the active tracking snapshot
+2. **Dogana** — if reviewing the snapshot reveals an element that is crossing a threshold, fire the checkpoint block before continuing
+3. **Content** — respond to what the operator asked
+
+The ordering rule exists because the snapshot may itself reveal a threshold crossing that was not visible turn by turn. Reviewing all active elements in one block creates the opportunity to catch crossings that accumulated gradually. The dogana block, if triggered, appears between the snapshot and the substantive response — not after it.
+
+<Tip>
+If no elements are in `Candidate`, `Tracked`, `Quarantined`, or `Needs verification` state, write `No active tracking: —` and continue. This is a valid and expected output. It means the session is clean at the surface trigger point.
+</Tip>

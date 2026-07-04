@@ -1,0 +1,81 @@
+---
+title: "Source Classes: OP, EXT, AI, MP, and DSK Explained"
+sidebarTitle: "Source Classes"
+description: "Shaping Frame separates material into five source classes — OP, EXT, AI, MP, and DSK — each carrying different authority to ground decisions in a working session."
+---
+
+Every piece of material that enters a shaping session arrives from somewhere, and where it came from determines how much authority it has to ground a decision. Shaping Frame formalizes this into five source classes. Separating them is what prevents unvetted AI proposals or model priors from silently acquiring decision weight — the moment a source class is identified, its default weight and state are known, and the frame can track whether it moves beyond what has been approved.
+
+## Source class reference
+
+| Tag | Source | Default Weight | Default State | Key Risk |
+|-----|--------|---------------|---------------|----------|
+| OP | Operator — intents, constraints, decisions | Maximum | Never tagged | — |
+| EXT | External material brought by OP | High | Candidate | Relevance ≠ approval |
+| AI | In-session generated output | Low | Spark / Candidate | Silent accumulation |
+| MP | Model prior / best practice / training assumption | Low | Quarantined (if grounding decisions) | Sounds authoritative; enters without introduction |
+| DSK | Documentary state from disk / tool | Documentary | N/A | Describes state; does not decide intent |
+
+## OP — Operator
+
+OP carries maximum weight for all intents, constraints, priorities, corrections, and decisions. It is the decisional reference frame. OP is never tagged — its authority is implicit in the nature of the source.
+
+Within OP, the frame recognizes several internal distinctions that affect how material is handled:
+
+- **OP-decision** — explicit statements like "let's do this", "this is the constraint", "no". Crystallizes immediately.
+- **OP-hypothesis** — hedged statements like "maybe", "could be", "I think". Stays Spark or Candidate.
+- **OP-correction** — downgrades or rejects prior material when operator contradicts something established.
+- **OP-selection** — promotes one branch of an open fan, closing alternatives.
+- **OP-reformulation** — crystallizes the element unless the operator explicitly marks it as an attempt.
+
+One important limit: OP authority over decisions does not confer factual accuracy. When OP makes technical or factual claims that will ground a downstream decision, those claims may still require DSK, web, or tool verification. The question "is this what the operator wants?" is separate from the question "is this technically accurate?"
+
+## EXT — External material
+
+EXT covers all material the operator brings into the session: distillates, transcripts, conversations with other AI systems, uploaded files, documents, notes, and existing project material. It starts at high weight, Candidate state.
+
+EXT is relevant because the operator brought it. That relevance is real — it is not treated the same as an unsolicited AI proposal. But relevance is not approval. EXT becomes a decision only when the operator explicitly promotes it. Until then, it sits in the fan as a high-weight candidate that the operator may or may not intend to adopt.
+
+**OP-historical** is a special case within EXT. When imported material contains first-person OP statements — expressions of constraint, priority, or decision embedded inside a document or transcript — those statements carry higher weight than generic EXT, but they do not equal OP-current. The operator may have said something in a prior session under different constraints.
+
+Identify OP-historical by:
+1. First-person expressions of constraint, priority, or decision ("I want", "the constraint is", "no", "I decided")
+2. Explicit corrections of prior proposals
+3. Explicit weight assignments ("this matters", "this doesn't count")
+
+The rule for OP-historical: it may ground continuity decisions within the same scope. If it is being used to ground a new or structural decision, surface it and reconfirm before proceeding, because context shifts between sessions.
+
+## AI — In-session generated output
+
+AI covers material Claude generates in direct response to session-specific content. Its initial weight is low, and it starts as Spark or Candidate. Weight rises only when the operator approves, reformulates, corrects while keeping the core, selects it from alternatives, or uses it as a constraint.
+
+The primary risk with AI is silent accumulation. An AI proposal gets referenced twice. Then three times. It enters a follow-up question as an assumption. It starts structuring how the operator frames new problems. None of this constitutes approval — but by the time anyone notices, the proposal is behaving as if it were crystallized. Shaping Frame tracks citation count and structural use explicitly to catch this pattern before it completes.
+
+## MP — Model prior
+
+MP is distinct from AI. AI is a contextual proposal generated in response to the specific material in this session. MP is something different: the training patterns, general conventions, best practices, assumed versions, presumed tool behavior, and cultural memory that Claude carries into every conversation without being asked.
+
+MP is more dangerous than AI because it sounds authoritative. It enters the session without being introduced. It carries no tag by default. It can silently shape a structural decision while appearing to be a factual observation.
+
+The `[MP]` tag is mandatory whenever MP influences structural output. The signal rule is simple: tag `[MP]` whenever output contains phrases like "standard approach", "best practice", "normally", "usually", "it is known", "typically", or "common practice" — regardless of whether the output was generated in-session or imported. These phrases are reliable surface signals of MP content.
+
+If MP is grounding a decision rather than providing background context, its default state is Quarantined — useful but unsafe for structural output until the operator has vetted it.
+
+<Tip>
+The `[MP]` tag is mandatory whenever output contains "standard approach", "best practice", "normally", "usually", "it is known", "typically", or "common practice" — regardless of whether the output was generated in-session or imported.
+</Tip>
+
+## DSK — Documentary state
+
+DSK covers material read from disk, filesystem, MCP servers, or tools. Its weight is documentary: it describes what exists, not what should exist. DSK verifies state — it does not decide intent, priority, or direction.
+
+DSK plays two important roles. First, it can verify Candidate or Tracked elements: if a factual or technical claim is confirmed by a DSK read, that element's weight rises. Second, it can surface conflicts: if DSK contradicts what the operator has said or what the session has assumed, the frame surfaces the conflict explicitly. DSK does not automatically win over OP. OP does not automatically win over documented facts. These are separate questions — the decision and the state — and they require separate handling.
+
+<CardGroup cols={2}>
+  <Card title="Weight States" icon="arrow-up-right" href="/concepts/weight-states">
+    See how material from each source class moves through Spark, Candidate, Tracked, Crystallized, and Rejected.
+  </Card>
+  <Card title="Thresholds" icon="flag" href="/concepts/thresholds">
+    Learn when the cognitive checkpoint fires and what the four intensity levels produce.
+  </Card>
+</CardGroup>

@@ -1,0 +1,64 @@
+---
+title: "Handling Long and Fast Sessions with Shaping Frame"
+sidebarTitle: "Long Sessions"
+description: "Long or fast-moving Claude sessions create higher drift risk. Learn the declared limits of Shaping Frame and how to manage epistemic weight across a complex session."
+---
+
+Long sessions introduce higher drift risk. Conversational inertia accumulates — material referenced many times starts behaving as if decided, and the frame may miss some threshold crossings as the context grows. This is a host constraint, not a skill defect. Shaping Frame is designed to catch structurally important crossings, not every one. Understanding the declared limits of the frame lets you work around them deliberately rather than discovering them at write time.
+
+## Declared limits
+
+The frame cannot guarantee perfect continuity across a long or fast session. These are the structural reasons why.
+
+Claude Desktop does not provide a hook layer or persistent runtime guard for skills. There is no automatic pre-write interception running at the system level before each Claude response. The frame reconstructs its state from conversation context and the custom instruction anchor — which means the fidelity of its tracking depends on the conversation still being in context and the frame being read in full rather than compressed.
+
+In long or fast sessions, some threshold crossings will be missed. An AI proposal that gets cited across many turns without explicit approval may accumulate operational weight without the frame surfacing it at each step. An MP assumption may ground a decision without a visible checkpoint. This is expected and declared.
+
+<Note>
+These are host constraints, not skill defects. The frame reduces drift by making threshold crossings visible. It does not eliminate drift.
+</Note>
+
+## Higher-risk patterns in long sessions
+
+These are the specific failure modes that become more likely as sessions grow longer.
+
+**Recency drift.** The last formulation of a concept starts feeling like the current position — not because you approved it, but because it is recent, fluent, and last in context. The anti-recency rule exists to counter this: the latest thing said wins only if it is explicitly an OP correction, revocation, or decision. "I think we should consider X" near the end of a long session does not override "we're going with Y" from fifty turns earlier. But in practice, recency creates the illusion of decision, and the frame may not surface every case.
+
+**Zombie returns.** A proposal you explicitly rejected resurfaces through superficial reformulation — renamed, reframed, or introduced as if it were new. Rejected material stays tracked to prevent this, but in a long session the frame may miss a reformulation that is distant enough from the original. If a concept you thought you discarded starts grounding a new proposal, it is worth checking whether it is genuinely new or a return.
+
+**Silent accumulation.** An AI proposal gets referenced twice, then five times, then used as a premise for a new decision — all without explicit OP approval. The frame tracks this as Tracked state and surfaces it when it crosses a threshold, but early citations in a long session may not all be caught. By the time the material is clearly behaving as a decision, it may have accumulated significant weight without any visible checkpoint.
+
+**OP-historical treated as OP-current.** You import a document, transcript, or previous conversation that contains statements you made in an earlier session — constraints, priorities, decisions. The frame treats those as OP-historical: higher weight than generic EXT, but not equivalent to OP-current. If OP-historical material starts grounding a new or structural decision in the current session, the frame should surface and reconfirm it. In long sessions, this may not always happen. The rule is: OP-historical may ground continuity decisions within the same scope. New or structural decisions require reconfirmation.
+
+## Practical strategies
+
+These practices reduce drift risk without requiring constant manual tracking.
+
+**Ask for an orientation snapshot explicitly.** The phrases "where do we stand?", "what has been decided?", or "give me a recap" fire a surface trigger and produce a compact snapshot of active Tracked elements. Use this deliberately before any structural decision — especially if the session has been running for a while or the scope has shifted. The snapshot tells you what the frame currently considers in motion.
+
+**Make explicit corrections when changing direction.** There is a meaningful difference between "no, the earlier version was right" and "actually, let me reconsider." The first is an OP correction — it downgrades the current formulation and reactivates the prior. The second is an OP hypothesis — it opens a new branch but does not close anything. When you want to override a previous direction, say so explicitly.
+
+**Run the pre-write gate manually before structural work.** Before you ask Claude to write a spec, create a file, or produce a reusable document, ask it to list what is Crystallized, what is still in motion (Tracked or Candidate), and what carries Needs verification or Quarantined flags. This gives you a clean view of the epistemic state before anything becomes structural.
+
+**Reconfirm OP-historical when resuming.** When you continue a session after a break, or import material from a previous conversation, treat any OP-historical statements that will ground new decisions as requiring reconfirmation. The context has shifted. What was a constraint in a previous session may no longer apply, or may apply differently. Import the relevant context as EXT and state explicitly which decisions from that context are still current.
+
+## Resuming after a break
+
+When you continue a conversation after time away — a few hours, a day, or longer — the earlier context is still present in the conversation thread. But that context may be treated differently depending on how it was generated.
+
+Material that was Tracked but not Crystallized before the break should be re-evaluated. The frame does not automatically reset Tracked elements between sessions. A proposal that was gaining weight before the break is still in that state when you return — but you may have changed your mind, or the scope may have shifted.
+
+Before resuming any structural work, ask Claude to surface the current state: what is Crystallized, what is still in motion, and what has flags. This gives you a baseline before you proceed.
+
+<Warning>
+Do not assume that material you discussed in a previous session is still active. Import it explicitly as EXT, and reconfirm any decisions that will ground structural work in the new session.
+</Warning>
+
+<CardGroup cols={2}>
+  <Card title="Anti-Patterns" icon="triangle-exclamation" href="/guides/anti-patterns">
+    The most common ways Shaping Frame sessions go wrong, with specific examples and fixes.
+  </Card>
+  <Card title="Surface Behavior" icon="radar" href="/reference/surface-behavior">
+    When and how the frame emits output — surface triggers, dogana blocks, and the silence rule.
+  </Card>
+</CardGroup>

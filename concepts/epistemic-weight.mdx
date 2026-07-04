@@ -1,0 +1,61 @@
+---
+title: "Epistemic Weight: How Shaping Frame Tracks Authority"
+sidebarTitle: "Epistemic Weight"
+description: "Epistemic weight is the measure of authority a piece of information holds to ground a decision. Learn how Shaping Frame tracks weight in motion across a Claude session."
+---
+
+Epistemic weight is not a label you assign once and forget. In Shaping Frame, weight is in motion — it rises, falls, and crosses thresholds across every turn of a session. A piece of material does not carry fixed authority because of where it came from. It carries the authority it has accumulated at this point in the conversation, given how it has been handled, referenced, and acted upon. The frame tracks that movement continuously, making the crossings visible before they harden into decisions that no one explicitly made.
+
+## The core failure mode: silent promotion
+
+The most common problem in complex working sessions is not a wrong decision — it is a decision that was never made but is being treated as if it were. Silent promotion happens when material gains structural weight without explicit operator approval.
+
+Consider a concrete example: Claude proposes an architecture pattern in turn three of a session. The operator does not respond to it directly, but references it in turn five as part of a new question. Claude responds to that question assuming the pattern is in play. By turn eight, the pattern has been used to shape two follow-up proposals, and it appears as an assumption in a draft document. No one ever said "yes, use this." But the pattern is now behaving like a crystallized decision — it is grounding downstream output, filtering alternatives, and creating path dependencies.
+
+This is silent promotion. The proposal moved from Spark to Candidate to a premise to an implicit constraint, and did so invisibly, carried by conversational momentum rather than operator intent. Shaping Frame exists to make that movement visible and to fire a checkpoint before it completes.
+
+## Weight in motion
+
+The frame tracks how material moves, not just what it is. An element's weight can rise or fall depending on what happens to it in the session.
+
+**Weight rises when:**
+
+- The operator explicitly approves, reformulates, or selects the material
+- The operator uses the material as a constraint on a subsequent decision
+- The operator corrects a related element while preserving the core of this one
+- A DSK read from disk or tool confirms an existing state
+- Multiple independent sources converge on the same element without open conflicts
+
+**Weight falls when:**
+
+- The operator corrects or rejects the material
+- An unresolved conflict with another element emerges
+- The material is discovered to be a model prior disguised as a factual claim
+- The material is discovered to be conversational residue from a prior session
+- The material was assumed to be authoritative only because it was recent
+- DSK or tool verification refutes it
+
+Note that multi-source convergence increases plausibility and attention priority — it does not by itself crystallize a decision. Only operator action or DSK verification can crystallize. The frame raises a flag when convergence occurs, not a green light.
+
+## The anti-recency rule
+
+The most recent formulation of an idea does not automatically win. This is a hard rule in Shaping Frame, not a guideline.
+
+Recency creates the illusion of decision. When something was said last, it feels like the current position. It sits at the top of context, it's phrased most fluently, and the conversation has moved past the alternatives — so it feels settled. But fluency is not approval, and recency is not revision. The last thing said is just the last thing said.
+
+When two elements conflict, Shaping Frame requires making the conflict explicit, assigning current weight to each, and — if a decision is needed to proceed — asking the operator. It does not resolve the conflict by defaulting to whichever formulation is more recent, more confident, or more fluid.
+
+**Exception:** a recent formulation prevails only if it is explicitly an OP correction, revocation, or decision. In that case it wins not because it is recent — it wins because the operator marked it as an update. The operator's authority is what resolves the conflict, not the position of the statement in the conversation timeline.
+
+<Warning>
+The anti-recency rule is the most commonly violated principle in long shaping sessions. Conversational inertia makes the last thing said feel like the current position — but it is just the last thing said.
+</Warning>
+
+<CardGroup cols={2}>
+  <Card title="Source Classes" icon="tag" href="/concepts/source-classes">
+    Understand how OP, EXT, AI, MP, and DSK each carry different kinds of authority into a session.
+  </Card>
+  <Card title="Weight States" icon="arrow-up-right" href="/concepts/weight-states">
+    See how material moves through Spark, Candidate, Tracked, Crystallized, and Rejected states.
+  </Card>
+</CardGroup>

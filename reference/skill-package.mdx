@@ -1,0 +1,67 @@
+---
+title: "Shaping Frame Skill Package Structure"
+sidebarTitle: "Skill Package"
+description: "The shaping-frame.skill archive contains four files that form a layered cognitive frame. Learn what each file does and when Claude reads it."
+---
+
+The `shaping-frame.skill` file is a ZIP archive uploaded to Claude Desktop through the Skills panel. Inside the archive are four files that work together as a layered cognitive frame: a full operating specification, a compact reminder, a checkpoint checklist, and a surface snapshot format. Claude reads each layer at a different point in the conversation, keeping the full frame active while only loading heavier references when they are needed.
+
+## Package structure
+
+```text
+shaping-frame.skill
+└── shaping-frame/
+    ├── SKILL.md
+    └── references/
+        ├── frame.md
+        ├── dogana.md
+        └── snapshot.md
+```
+
+## The four layers
+
+Each file in the archive occupies a distinct layer of the frame. They are not interchangeable — each is read at a specific moment for a specific purpose.
+
+| Layer | File | Role | When read |
+|---|---|---|---|
+| Full frame | `SKILL.md` | Complete operating specification. Verbatim read required. | Active for the entire conversation |
+| Compact reminder | `references/frame.md` | Summary of sources, states, and threshold rules | At session start and on drift risk |
+| Checkpoint checklist | `references/dogana.md` | Step-by-step checklist for threshold crossings | When a checkpoint threshold fires |
+| Surface snapshot | `references/snapshot.md` | Format template for active tracking blocks | When a surface trigger fires |
+
+## SKILL.md — the full frame
+
+`SKILL.md` is the complete operating specification for the skill. It defines sources, weight states, thresholds, surface triggers, checkpoint intensity levels, inline tagging rules, the pre-write gate, and decontamination behavior.
+
+The skill header carries an explicit verbatim read requirement:
+
+```text
+Execute full-read: mapping strictly mandatory. No distillation allowed.
+Read verbatim: disable semantic summarization for all the "shaping frame"
+skill or related components. This is a structural requirement for the skill
+to function properly.
+```
+
+This means Claude must not summarize or compress the skill before applying it. The full specification must be mapped into the operating frame, not distilled into a shorter approximation. This behavior is reinforced and anchored by the custom instruction — without the `CUSTOM_INSTRUCTION.txt` anchor in place, this requirement may not be respected.
+
+## references/frame.md — the compact reminder
+
+`references/frame.md` is a condensed version of the core rules: source classes, default weights, weight states, threshold vocabulary, surface trigger conditions, the anti-recency rule, and checkpoint intensity levels.
+
+Claude reads `frame.md` at the start of each working session to orient the frame before the conversation moves. It reads it again if drift is detected — meaning material has started behaving as if decided without OP approval. The compact reminder is designed to be fast to re-read and re-apply without interrupting the session.
+
+## references/dogana.md — the checkpoint checklist
+
+`references/dogana.md` contains the full checklist of controls to run when a checkpoint threshold fires. It lists all nine threshold crossings, twelve diagnostic controls, the dogana block output format, a four-level intensity guide, and the quick-reference tag table.
+
+Claude reads this file when it detects that material is crossing a threshold — for example, when an AI-generated proposal starts acting as a premise for a structural decision, or when a model prior is about to ground an architecture choice. The checklist makes the crossing visible and provides the format for surfacing it to the operator.
+
+## references/snapshot.md — the surface snapshot format
+
+`references/snapshot.md` defines the format of the active tracking block that Claude emits when a surface trigger fires. It specifies the five fields of each tracked element, the states that qualify for inclusion, the states that do not, and the ordering rule for output.
+
+Claude reads this file when a surface trigger occurs — for instance, when the operator changes direction, asks for orientation, or opens a new artifact. The snapshot block is emitted before Claude responds to content, giving the operator a view of what is in motion before the conversation advances.
+
+<Note>
+The `CUSTOM_INSTRUCTION.txt` file is not part of the `.skill` archive. It must be added separately to Instructions for Claude in Claude Desktop settings.
+</Note>

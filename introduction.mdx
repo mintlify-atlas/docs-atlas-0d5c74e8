@@ -1,0 +1,75 @@
+---
+title: "Shaping Frame: A Cognitive Layer for Claude"
+sidebarTitle: "Introduction"
+description: "Learn what Shaping Frame is, the problem it solves, and how its epistemic weight tracking model keeps your Claude sessions grounded."
+---
+
+Shaping Frame is a session-level cognitive frame for Claude Desktop that tracks epistemic weight during complex working sessions — what is still a hypothesis, what has been decided, and what Claude generated but you have not yet validated. It operates every turn, silently, and surfaces only when material starts crossing a threshold without your explicit approval. If you have ever finished a long Claude session and realized a phrase you used early on had quietly become an architectural constraint by the end, Shaping Frame is built for exactly that problem.
+
+## The Core Failure Mode: Silent Promotion
+
+The failure mode Shaping Frame targets is **silent promotion**. A phrase, suggestion, assumption, or imported fragment gets repeated, reused, or built upon across turns until it starts behaving like a decided constraint — even though you, the operator, never explicitly approved it. It does not announce itself. It accumulates through conversational inertia: cited once, referenced again, used as a premise in the next proposal, and suddenly acting like a decision.
+
+Silent promotion is especially dangerous with three kinds of material:
+
+- **AI-generated proposals** — Claude produces a suggestion in response to your input. You do not reject it. It gets referenced again three turns later as if it were agreed.
+- **External material you imported** — a document, transcript, or note you brought into the session. It is relevant because you brought it. That relevance is not the same as approval.
+- **Model priors** — Claude's training patterns, conventions, and defaults. They enter the session without being introduced, carry no tag, and sound authoritative.
+
+Shaping Frame creates friction at each of these crossing points, making the promotion visible before it becomes structural.
+
+## What Shaping Frame Is
+
+Shaping Frame is a **session-level cognitive frame**. Its job is to track epistemic weight while the conversation is still moving: ideas, constraints, imported material, Claude-generated proposals, model priors, and operator decisions.
+
+It separates material by **source class** — who or what introduced it — and tracks movement through **weight states**, from a raw spark through candidate, tracked, and crystallized, with explicit handling for rejected material, quarantined elements, and items that need verification before they can ground a decision.
+
+The frame operates every turn. It does not emit output on every turn. It fires a checkpoint when material crosses an epistemic threshold: the point where an unvetted element starts behaving like a decision. Between those crossings, silence is normal and expected.
+
+The frame's operating model consists of two layers:
+
+| Layer | Artifact | Role |
+|---|---|---|
+| Always-on floor | `CUSTOM_INSTRUCTION.txt` (in Instructions for Claude) | Active every turn, every session |
+| Full frame | `shaping-frame.skill` | Loaded for working sessions; provides the full rule set, source classes, weight states, checkpoints, and reference files |
+
+## What It Is Not
+
+Understanding what Shaping Frame is not is as important as understanding what it is. The frame is narrow by design.
+
+- **Not a file tool.** It does not read, write, or manage files. It tracks epistemic weight in the conversation layer.
+- **Not a code tool.** It has no execution environment and produces no code artifacts.
+- **Not a general prompt style.** It is not a persona, a tone modifier, or a way of asking Claude to be more careful. It applies specific threshold logic to specific source classes.
+- **Not a memory layer.** It does not persist state between sessions. Each conversation starts fresh, with the frame active from turn one.
+- **Not a writing template.** It does not structure your output or enforce a document format. It tracks what is behind your output, not the shape of the output itself.
+
+## The Package
+
+Shaping Frame ships as two artifacts that must be used together.
+
+**`shaping-frame.skill`** — the skill archive. It contains `SKILL.md` (the full frame), plus three reference files: `frame.md` (a compact reminder, read at session start and on drift risk), `dogana.md` (the checkpoint checklist, read when a threshold fires), and `snapshot.md` (the surface snapshot format, read when a surface trigger fires). Upload this to Claude Desktop via the Skills panel.
+
+**`CUSTOM_INSTRUCTION.txt`** — the anchor. This is not part of the `.skill` archive. It must be added separately to **Instructions for Claude** in your Claude Desktop settings. Its purpose is narrow but critical: it tells Claude to execute a full read of the skill and keep the frame active as a working posture. Without it, Claude may treat the skill like ordinary reference material — reading it once, summarizing it, and applying only a distilled version. The anchor prevents that compression.
+
+Both artifacts are required. The skill provides the full frame. The anchor ensures the frame runs as intended.
+
+## Host Limits
+
+<Note>
+  Claude Desktop does not provide a hook layer for this skill. There is no automatic pre-write interception and no persistent runtime enforcement guard. The frame is reconstructed through the conversation context and the custom instruction anchor.
+
+  In long or fast sessions, some threshold crossings will be missed. The frame reduces drift by making threshold crossings visible — it does not eliminate drift. This is a host constraint, not a skill defect.
+</Note>
+
+The frame catches the structurally important crossings. It does not guarantee perfect continuity on every turn of every session. Design your working sessions with that limit in mind: the frame is a cognitive layer that creates friction at key boundaries, not an infallible enforcement mechanism.
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Install the skill and activate the custom instruction anchor in under five minutes.
+  </Card>
+  <Card title="Epistemic Weight" icon="scale-balanced" href="/concepts/epistemic-weight">
+    Understand the weight states, thresholds, and checkpoint logic at the core of the frame.
+  </Card>
+</CardGroup>

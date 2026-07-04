@@ -1,20 +1,51 @@
 ---
-title: "Introduction"
-description: "Welcome to your project"
+title: "Shaping Frame: Epistemic Weight Tracking for Claude"
+sidebarTitle: "Home"
+description: "Shaping Frame is a cognitive layer for Claude that tracks what is still a hypothesis, what has been decided, and what Claude generated but you have not validated yet."
 ---
 
-Write a short description of your product here. What it does, who it's for, and what they can accomplish with it.
+Shaping Frame is a Claude Desktop skill that tracks **epistemic weight** during complex working sessions. It makes the difference between a hypothesis, a decision, and an unvalidated AI proposal explicit — surfacing only when something is crossing a threshold without your approval.
 
-<Tip>
-  Ready to make this your own? Start by editing this page. Update your `docs.json` file to customize your site. Then fill out the [Quickstart](/quickstart) page.
-</Tip>
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Install the skill and activate it in Claude Desktop in under five minutes.
+  </Card>
+  <Card title="Core Concepts" icon="brain" href="/concepts/epistemic-weight">
+    Understand epistemic weight, source classes, and the weight state machine.
+  </Card>
+  <Card title="Reference" icon="book" href="/reference/skill-package">
+    Full reference for the skill package, inline tags, and checkpoint formats.
+  </Card>
+  <Card title="Guides" icon="map" href="/guides/working-sessions">
+    Practical guidance for working sessions, long conversations, and avoiding drift.
+  </Card>
+</CardGroup>
 
-<Card title="Quickstart" icon="rocket" href="/quickstart">
-  This card links to the quickstart page in your project.
-</Card>
-<Card title="Components" icon="puzzle-piece" href="https://mintlify.com/docs/components">
-  Add cards, callouts, steps, tabs, and more to design and structure your pages.
-</Card>
-<Card title="Settings" icon="gear" href="https://mintlify.com/docs/organize/settings">
-  Set your site name, branding, and navigation in the `docs.json` file.
-</Card>
+## The problem Shaping Frame solves
+
+In any complex Claude session — designing a system, drafting a spec, shaping a workflow — ideas accumulate weight silently. A Claude-generated suggestion gets referenced twice. A model assumption enters a draft as if it were decided. An imported document starts being treated as operator intent.
+
+This is **silent promotion**: material advances from hypothesis to premise to constraint to decision without any explicit approval from you.
+
+Shaping Frame creates friction at those crossings. It tracks the provenance and weight of every active element, fires a checkpoint when material is about to cross an epistemic boundary, and stops before writing structural artifacts that contain unvetted content.
+
+## How it works
+
+<Steps>
+  <Step title="Install the skill">
+    Upload `shaping-frame.skill` to Claude Desktop via **Settings → Skills → Create skill → Upload a skill**.
+  </Step>
+  <Step title="Add the custom instruction">
+    Copy the contents of `CUSTOM_INSTRUCTION.txt` into **Settings → Instructions for Claude**. This anchor tells Claude to run the skill as a full active frame, not summarize it.
+  </Step>
+  <Step title="Start a working session">
+    Open a new conversation. The frame is active from turn one. It tracks source classes (OP, EXT, AI, MP, DSK), weight states (Spark → Crystallized), and fires checkpoints at defined thresholds.
+  </Step>
+  <Step title="Approve or reject explicitly">
+    When the frame surfaces a checkpoint, decide: crystallize, reject, or keep tracking. Your explicit decisions are the only thing that promotes material to structural weight.
+  </Step>
+</Steps>
+
+<Note>
+  Shaping Frame does not produce output on every turn. It surfaces only when material crosses a threshold or when a surface trigger fires (direction change, new constraint, phase shift). Silence is the normal state.
+</Note>

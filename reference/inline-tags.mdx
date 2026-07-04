@@ -1,0 +1,72 @@
+---
+title: "Inline Tags: [AI], [MP], [EXT], [DSK], [~]"
+sidebarTitle: "Inline Tags"
+description: "Inline tags mark source weight at the sentence level. Learn the five tags, when to apply them, and the rules that prevent tag overuse."
+---
+
+Inline tags are the lightest form of output from the frame. They appear at Level 1 checkpoint intensity — when the source class of a statement changes how it should be weighted by the operator, but the crossing is not significant enough to warrant a full dogana block. A tag is a one-character signal that tells the operator: the weight of this sentence depends on where it comes from, and where it comes from is not obvious.
+
+## Tag reference
+
+| Tag | Meaning |
+|---|---|
+| `[AI]` | In-session generated proposal |
+| `[MP]` | Model prior / general assumption / training pattern |
+| `[EXT]` | External material, not yet crystallized |
+| `[DSK]` | State read from disk or tool |
+| `[~]` | Mixed or uncertain provenance |
+
+## When to tag
+
+Tag only when the tag changes the weight of the output for the reader. A sentence tagged `[MP]` tells the operator that the claim comes from training assumptions, not from verified session context — and that changes whether they should act on it. If removing the tag would not change how the operator weighs the sentence, the tag is not needed.
+
+Do not tag every sentence. Do not invent tags to appear thorough. Do not tag OP — OP is the decisional reference frame and is never tagged. Its statements carry maximum weight by definition.
+
+## The [MP] rule — mandatory tagging
+
+The `[MP]` tag is mandatory when output contains any of the following signal phrases, regardless of whether the output was generated in-session or imported from an external source:
+
+- "standard approach"
+- "best practice"
+- "normally"
+- "usually"
+- "it is known"
+- "typically"
+- "common practice"
+
+These phrases are reliable surface signals of model prior content. They import training patterns as if they were established facts. When they appear, the tag is required — not optional.
+
+MP is considered more dangerous than AI because it sounds authoritative. An AI-generated proposal is introduced into the session visibly. An MP enters without introduction, carries no label, and can silently shape a structural decision if left untagged.
+
+## Examples
+
+**Level 1 inline tag — standalone:**
+
+```text
+[MP] this is a general convention, not yet verified in your setup.
+```
+
+**Level 1 inline tag — embedded in a sentence:**
+
+```text
+The standard timeout for this type of connection is 30 seconds [MP] — verify
+against your infrastructure before using as a constraint.
+```
+
+**[DSK] tag — marking a state read from a file:**
+
+```text
+The current schema version is 4 [DSK] — this is what is on disk, not what
+the session has been assuming.
+```
+
+**[~] tag — mixed provenance:**
+
+```text
+This naming pattern [~] appears in both the uploaded spec and the in-session
+proposal, but the two versions differ.
+```
+
+<Note>
+Tags are for communication, not compliance. A sentence tagged `[MP]` signals to the operator that the claim comes from training assumptions, not from verified context. It invites scrutiny without stopping the flow. A tag is not a disclaimer — it is information about epistemic weight.
+</Note>

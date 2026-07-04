@@ -1,0 +1,50 @@
+---
+title: "Pre-Write Gate: Vetting Before Structural Output"
+sidebarTitle: "Pre-Write Gate"
+description: "The pre-write gate is a Level 3 checkpoint that fires before Claude writes structural artifacts. Learn the gate format, decision rules, and what triggers a hard stop."
+---
+
+The pre-write gate is a special case of the cognitive checkpoint. It fires before Claude persists structural artifacts: modifying files, creating specs, fixing rules, writing reusable documents. The checkpoint operates throughout shaping — during ideation, constraint evaluation, and adversarial review — but the pre-write gate is the hardest enforcement point in the frame. It is where silent accumulation most frequently becomes structural damage, and where a stop is most likely to be required.
+
+## Gate format
+
+When the pre-write gate fires, Claude produces this block before proceeding:
+
+```text
+Target:
+Crystallized:
+In motion (Tracked / Candidate):
+Quarantined / Needs verification:
+Decision needed:
+```
+
+Each field is filled with the elements relevant to the artifact being written. The gate makes the epistemic state of the material visible at the moment it is about to become structural.
+
+## Decision rules
+
+**All crystallized → write.** Every element grounding the artifact has OP approval. The material is clean. Proceed.
+
+**Mixed but non-structural → compact dossier.** Some elements are in motion but do not affect the structure of the artifact — they are background context, not load-bearing. Produce a compact summary of what is in motion and proceed.
+
+**AI/MP/EXT unvetted in architecture / rules / spec → stop and surface.** Unvetted material is about to enter the structure of a persistent artifact. This is a Level 3 stop. Do not proceed until OP reviews and decides. This is the gate's primary enforcement case.
+
+**Unverified technical facts grounding decisions → Needs verification.** A factual or technical claim is being used as a foundation, but it has not been verified against DSK, a tool, or an external source. Flag it with the `Needs verification` state. Do not use it as a structural foundation until verification is complete.
+
+**Conversational residue in reusable output → decontaminate.** The material contains references to past sessions, embedded assumptions, or model priors presented as facts. Run a decontamination pass before writing. See the [Decontamination](/reference/decontamination) reference for the full procedure.
+
+## What counts as a structural artifact
+
+The pre-write gate fires for any output intended to persist beyond the conversation:
+
+- Files modified on disk
+- Specs and architecture documents
+- Rules and naming conventions
+- Reusable templates
+- External communications
+- Any document intended to exist independently of the session that produced it
+
+Conversational responses — even long, detailed ones — are not structural artifacts. The gate does not fire for in-session analysis, brainstorming output, or working notes that stay inside the conversation.
+
+<Warning>
+A Level 3 stop is non-negotiable. If AI/MP/EXT material would enter the structure of a spec, architecture document, or reusable artifact without OP vetting, Shaping Frame must stop and surface. Do not let the operator's inertia carry the session past this point. The purpose of the gate is to create friction exactly here — when the cost of proceeding is highest.
+</Warning>

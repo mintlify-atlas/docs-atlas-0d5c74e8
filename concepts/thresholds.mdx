@@ -1,0 +1,96 @@
+---
+title: "Thresholds: When the Cognitive Checkpoint Fires"
+sidebarTitle: "Thresholds"
+description: "Shaping Frame's cognitive checkpoint fires at ten defined epistemic thresholds. Learn what each threshold means and how the four checkpoint intensity levels determine output."
+---
+
+The cognitive checkpoint in Shaping Frame is called the dogana. It fires when material crosses an epistemic threshold — the point where it starts behaving like a decision. Crossing a threshold does not mean a decision has been made. It means material is acquiring the structural role of a decision without the operator having approved it. The checkpoint makes that crossing visible and forces operator vetting before the session proceeds. The dogana operates during shaping, not only pre-write. It fires whenever material is crossing a boundary in the semantic layer, regardless of whether a file is about to be written.
+
+## The threshold vocabulary
+
+These are the ten crossing points the frame monitors. Each describes a qualitative change in the role a piece of material is playing — from something provisional to something structural.
+
+| From | To |
+|------|----|
+| proposal | premise |
+| premise | constraint |
+| constraint | decision |
+| decision | artifact |
+| draft | spec |
+| provisional phrase | naming |
+| local compromise | architecture |
+| AI / MP / EXT | implicit OP |
+| factual hypothesis | technical foundation |
+
+The most structurally dangerous of these is **AI/MP/EXT → implicit OP**. This is the crossing where material that originated outside the operator's explicit intent starts being treated as if the operator sanctioned it. It happens gradually — through reference, through use in follow-up proposals, through appearing in drafts — and it is rarely announced. When the frame detects this crossing, it fires at Level 2 or higher.
+
+The **factual hypothesis → technical foundation** threshold is equally important when decisions have downstream dependencies. A technical assumption that grounds an architecture choice or a spec requirement carries weight far beyond its origin. If that assumption has not been verified, the entire structure built on it is at risk.
+
+## Additional triggers
+
+Beyond the ten threshold crossings, the dogana also fires when these patterns are detected:
+
+- **AI cited multiple times without approval** — the element enters Tracked state; the frame surfaces it at the next active threshold
+- **MP used as a foundation** — model prior material is grounding a decision-level element without operator vetting
+- **EXT treated as OP** — external material is being used with the authority of a direct operator decision
+- **OP-historical used as OP-current** — a statement from imported material is being treated as a live operator constraint without reconfirmation
+- **A Rejected element resurfaces** — previously discarded material is re-entering the session, whether through inertia, reformulation, or recency
+- **A draft becomes a spec** — a working document is acquiring the structural weight of a specification
+- **A Quarantined element enters structural output** — material flagged as unsafe for structure is being used in architecture, rules, or specs
+
+## Checkpoint intensity levels
+
+The frame does not interrupt flow on every element. It surfaces only when weight would change a current decision. The four intensity levels calibrate how much output the checkpoint produces to the severity of the crossing.
+
+### Level 0 — Silent tracking
+
+Material is in the fan but does not yet affect any active decision. The frame notes it internally. No output is produced. This is the default state for most Candidate elements.
+
+### Level 1 — Inline tag
+
+The source weight of an element changes how a sentence should be read, but does not require an operator decision to proceed. An inline tag makes the provenance visible without interrupting flow.
+
+```
+[MP] this is a general convention, not yet verified in your setup.
+```
+
+Use Level 1 when a model prior or AI proposal is present in the output but is not yet grounding a structural decision.
+
+### Level 2 — Compact dogana block
+
+AI, MP, or EXT material is crossing into premise, constraint, naming, spec, or architecture territory. The crossing requires a visible checkpoint and an explicit operator decision before proceeding with the structural element.
+
+The dogana block format:
+
+```
+Dogana:
+- Element:
+- Current state:
+- Flag:
+- Why it is rising:
+- Risk:
+- Decision needed:
+```
+
+Each field has a specific role. **Element** identifies the material crossing the threshold. **Current state** gives its weight-state at the moment of crossing. **Flag** indicates any transversal flags in effect (Quarantined, Needs verification). **Why it is rising** explains the mechanism — what has happened in the session that is driving the promotion. **Risk** names what goes wrong if the crossing completes without approval. **Decision needed** states the specific question the operator must answer to proceed.
+
+### Level 3 — Stop
+
+A hard stop. The frame does not produce the structural artifact, modification, or spec until the operator has made an explicit decision. Level 3 fires before persisting structural artifacts, or when a Quarantined element would enter Crystallized state without operator vetting.
+
+<Warning>
+Level 3 is a hard stop. Do not proceed with writing structural artifacts, modifying files, or creating specs until the operator has made an explicit decision.
+</Warning>
+
+<Tip>
+The dogana operates during shaping — not only pre-write. It fires whenever material is crossing a boundary in the semantic layer, regardless of whether a file is about to be written.
+</Tip>
+
+<CardGroup cols={2}>
+  <Card title="Surface Behavior" icon="eye" href="/reference/surface-behavior">
+    Learn when and how the frame emits snapshots and when dogana blocks appear in the output flow.
+  </Card>
+  <Card title="Pre-Write Gate" icon="shield-check" href="/reference/pre-write-gate">
+    Understand the special checkpoint that fires before any structural artifact is persisted to disk.
+  </Card>
+</CardGroup>

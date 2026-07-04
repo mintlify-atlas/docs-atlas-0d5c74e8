@@ -1,0 +1,59 @@
+---
+title: "Decontamination: Removing Conversational Residue"
+sidebarTitle: "Decontamination"
+description: "Contaminated material carries residue from past sessions or embedded assumptions. Learn which phrases to remove before persisting output and what is allowed to remain."
+---
+
+Contamination is material that carries conversational residue — references to past sessions, assumptions embedded as facts, or model priors that sound like established conventions. In the weight state vocabulary, a `Contaminated` flag marks material that requires a decontamination pass before it is used in persistent, structural, or reusable output. The decontamination pass removes this residue so the output can stand on its own without hidden dependencies on context that is not present in the document itself.
+
+## Conversational residue
+
+The following phrases reference context that exists only inside the conversation. They make output unreliable as a standalone artifact because a reader outside the session cannot verify or locate what they refer to. Remove them before persisting any material:
+
+- "as discussed"
+- "as you decided"
+- "from the previous session"
+- "as mentioned"
+- "in the previous chat"
+
+These phrases are not summaries of content — they are pointers to a context that does not travel with the document. In persistent output, they create invisible dependencies on a conversation the reader may not have access to.
+
+## MP disguised as facts
+
+The following phrases import model priors as if they were established facts. In a working session they function as shorthand; in a persistent artifact they create hidden dependencies on training assumptions. Remove or explicitly flag them before persisting:
+
+- "best practice"
+- "standard approach"
+- "normally"
+- "usually"
+- "in general"
+- "it is known that"
+- "the typical solution"
+
+When one of these phrases appears in material heading toward structural output, it should either be replaced with the specific, verifiable claim it was standing in for, or removed if it carries no verifiable content of its own.
+
+## What is allowed to remain
+
+Three conditions allow these phrases to remain in persistent output without triggering decontamination:
+
+**Crystallized by OP.** The operator has explicitly approved the claim. The phrase is not functioning as an assumption — it reflects a decision that has been made.
+
+**Verified by DSK/tool/web.** The claim has been checked against documentary evidence: a file on disk, a tool response, or an external source. The phrase can remain if the verification is noted.
+
+**Explicitly declared as assumptions.** The phrase is presented as an assumption, not as an established fact. The output makes clear that this is a starting point, not a conclusion.
+
+## When to decontaminate
+
+Run a decontamination pass before persisting output in any of the following forms:
+
+- Reusable documents
+- Specs and architecture notes
+- Rules, conventions, or templates
+- External communications
+- Any output intended to exist beyond the current conversation
+
+Decontamination is a required step in the pre-write gate when the gate identifies `Contaminated` material in the elements grounding the artifact.
+
+<Tip>
+Decontamination is required before structural output, but it is not a rewrite. Replace contaminated phrases with the underlying claim stated plainly — the specific fact, the actual decision, the real constraint — or remove them if they carry no verifiable content. The goal is output that stands on its own, not output that has been stripped of meaning.
+</Tip>

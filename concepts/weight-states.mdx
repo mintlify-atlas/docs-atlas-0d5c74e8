@@ -1,0 +1,103 @@
+---
+title: "Weight States: From Spark to Crystallized"
+sidebarTitle: "Weight States"
+description: "Shaping Frame tracks material through five primary weight states and three transversal flags. Learn how elements move through the state machine and when flags apply."
+---
+
+Every piece of material in a session has a current state. Shaping Frame tracks state transitions continuously — not only at write time — and fires checkpoints when material is about to cross an epistemic boundary without operator approval. The state machine has five primary states and three transversal flags. Primary states are mutually exclusive: material is either Spark, Candidate, Tracked, Crystallized, or Rejected at any given moment. Transversal flags apply alongside primary states — an element can be Candidate and Quarantined, or Tracked and Needs verification, at the same time.
+
+## Primary states
+
+### Spark
+
+Spark is raw intuition, friction, an unstructured direction, or an initial idea that has not yet been evaluated. Material in Spark state is worth noting — it may become relevant as the session develops — but it does not yet require operator attention or explicit tracking. Spark is the entry point for most material, regardless of source class.
+
+### Candidate
+
+Candidate is material in the fan: present, weighted, and under consideration, but not yet decided. The fan should stay open until the operator closes it. Candidate elements can come from any source class — an OP-hypothesis stays Candidate until the operator makes a decision, a high-weight EXT document is Candidate until the operator explicitly promotes it, and an AI proposal is Candidate until vetted.
+
+The key discipline around Candidate is not closing the fan prematurely. A fan closes when the operator makes a selection or decision. It does not close because the conversation has moved on, because one option has been referenced more than the others, or because a formulation sounds more polished.
+
+### Tracked
+
+Tracked is material that has crossed at least one threshold without crystallization and is gaining operational weight. This is the most important state for catching silent promotion. An element enters Tracked when any of the following occur:
+
+- It has been cited more than once without operator approval
+- It has become the premise of another proposal
+- It has entered a draft as an assumption
+- It has generated unresolved bifurcations — downstream proposals that depend on it
+- It has changed how a current decision is interpreted
+
+Tracked must be flagged explicitly. Unapproved material gaining weight is a form of silent decision — the frame treats it as such. A Tracked element can remain without producing output only if it does not currently change any active decision. The moment it crosses an active threshold, the frame produces a compact dogana block or an inline note.
+
+### Crystallized
+
+Crystallized is material that has been approved by the operator. Approval can take several forms:
+
+- An explicit yes
+- A direct decision ("let's do this", "this is the constraint")
+- OP reformulation of the material
+- OP selection among alternatives
+- OP use of the material as a constraint on a subsequent decision
+- OP correction of a related element that preserves the core of this one
+
+Crystallized material can be used in structural output. It is not re-evaluated at every turn — it is the stable ground the session builds on.
+
+### Rejected
+
+Rejected is material discarded by the operator. Rejected does not mean forgotten — it stays tracked to prevent zombie returns. A rejected proposal must not re-enter the session through inertia, recency, or superficial reformulation that obscures the original idea. If a rejected element comes back in a new form, the frame surfaces it explicitly, identifies it as a return of previously rejected material, and asks the operator to confirm whether they intend to revisit it or whether the rejection stands.
+
+## Transversal flags
+
+### Quarantined
+
+Quarantined applies to material that is useful but unsafe for structural output in its current state. Unlike Rejected, a Quarantined element has potential — it needs vetting, not dismissal. Quarantined material cannot ground a decision or enter structural output without operator vetting.
+
+Apply Quarantined when:
+- The element is a strong MP (model prior) influencing a structural decision
+- An unverified technical hypothesis is being used to ground output
+- An unvetted AI proposal is entering architecture or specifications
+- EXT material contains contradictions that have not been resolved
+- A factual claim is being used to ground a decision before verification
+
+### Contaminated
+
+Contaminated applies to material carrying conversational residue, improper references to past sessions, or assumptions that have been embedded as facts through phrasing alone. Contamination sounds like context but is assumption — phrases like "as discussed", "as you decided", "from the previous session", or "as mentioned" introduce residue that can silently shape output.
+
+Contaminated material must be decontaminated before being used in persistent, structural, or reusable output. In artifacts intended for external reuse, remove conversational residue unless the operator explicitly requests provenance tracking.
+
+### Needs verification
+
+Needs verification applies to material that requires DSK, web, or tool verification before it can ground a factual or technical decision. The flag keeps the session moving while marking the element as unresolved — the flow continues with the assumption marked, as long as it does not crystallize before verification happens.
+
+If verification is not possible in the current context, the element is frozen: it cannot advance state or ground a decision. It must be surfaced at the next surface trigger, regardless of whether the operator has asked about it. Do not downgrade a Needs verification element to Quarantined — the specific reason for the flag must remain visible so that the right verification step can be taken when it becomes available.
+
+<Note>
+Crystallized and Rejected elements are closed — they do not appear in active tracking snapshots. Only Candidate, Tracked, Quarantined, and Needs verification elements are surfaced in the frame's output.
+</Note>
+
+## Promotion and demotion rules
+
+| Direction | Trigger |
+|-----------|---------|
+| **Rises** | OP approves, reformulates, selects, uses as constraint, or corrects while preserving the core |
+| **Rises** | DSK read verifies an existing state claim |
+| **Rises** | Multiple independent sources converge without open conflicts |
+| **Falls** | OP corrects or rejects the material |
+| **Falls** | An unresolved conflict with another element emerges |
+| **Falls** | Material is discovered to be MP disguised as a factual claim |
+| **Falls** | Material is discovered to be conversational residue |
+| **Falls** | Weight was assumed due to recency rather than approval |
+| **Falls** | Material is incompatible with the current frame |
+| **Falls** | DSK or tool verification refutes the material |
+
+Multi-source convergence increases plausibility and attention priority — it does not crystallize decisions without operator action. DSK can crystallize documentary state. Only the operator crystallizes decisions.
+
+<CardGroup cols={2}>
+  <Card title="Thresholds" icon="flag" href="/concepts/thresholds">
+    Learn when the cognitive checkpoint fires and what each intensity level produces.
+  </Card>
+  <Card title="Surface Behavior" icon="eye" href="/reference/surface-behavior">
+    Understand when and how the frame emits snapshots and dogana blocks.
+  </Card>
+</CardGroup>

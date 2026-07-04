@@ -1,0 +1,115 @@
+---
+title: "Common Anti-Patterns in Shaping Frame Sessions"
+sidebarTitle: "Anti-Patterns"
+description: "The most common ways Shaping Frame sessions go wrong — silent promotion, recency confusion, and MP contamination — with specific examples and how to avoid them."
+---
+
+Shaping Frame eliminates a specific class of session failures — unvetted material quietly becoming structural — but new failure modes can emerge when the frame is not used correctly. These anti-patterns are the most common ways sessions drift even with the frame active. Most of them share a single root cause: the operator treats conversational momentum as a decision.
+
+<AccordionGroup>
+  <Accordion title="Treating AI proposals as decisions">
+    The most common anti-pattern. Claude generates a proposal, the operator says "that works", and the proposal enters subsequent reasoning as if it were Crystallized.
+
+    The problem is ambiguity. "That works" can mean "I approve this — use it" or "that seems plausible, continue exploring." The frame treats ambiguous approval as **Candidate**, not Crystallized. But if the operator does not notice the distinction, they may proceed as if the decision was made — and subsequent reasoning builds on an unapproved foundation.
+
+    This compounds over time. An unapproved proposal gets referenced in the next turn, then used as a premise, then becomes an architectural constraint — all without a single explicit approval.
+
+    **Fix:** Be explicit when you mean to approve something.
+
+    | Ambiguous | Clear |
+    |---|---|
+    | "That works." | "Yes, use that." |
+    | "Looks good." | "That's the direction — lock it in." |
+    | "Makes sense." | "Go with option A." |
+
+    Explicit approval takes one additional word. The cost of not making it explicit is carrying unvetted material into structural output.
+  </Accordion>
+
+  <Accordion title="Letting model priors ground architecture">
+    Claude says "the standard approach for this is X" and the operator accepts it without verification. The `[MP]` tag is mandatory in these cases, and the default state when MP grounds a decision is **Quarantined** — but if the operator does not notice the MP signal, the material may advance to Crystallized without any vetting.
+
+    Model priors are more dangerous than in-session AI proposals because they sound authoritative. They enter the session without being introduced. They carry the surface weight of established fact. "Best practice", "standard approach", "normally", "typically", "it is known that" — these phrases are reliable signals that Claude is drawing from training patterns, not from your system's documented state.
+
+    The frame requires `[MP]` tagging whenever these signals appear, and requires DSK or tool verification before MP material grounds a technical or structural decision. What is "standard" in the general case may not match your codebase, your constraints, or your environment.
+
+    **Fix:** When you see "standard approach", "best practice", "normally", "usually", or "typically" in a Claude response, treat it as a flag. Verify against your actual state (DSK, documentation, tool output) before using it as a constraint. Do not crystallize a decision based on MP alone.
+  </Accordion>
+
+  <Accordion title="Treating imported documents as decisions">
+    You upload a document — a spec, a previous conversation, a design notes file. Claude references it repeatedly. Over the course of the session, it starts being treated as operator intent: Claude cites it to justify decisions, uses its structure as a template, or applies its constraints as if you approved them.
+
+    EXT carries high weight because you brought it. That relevance is real. But bringing a document is not approving it. The document contains material you wanted Claude to have access to — not necessarily material you want to use as-is.
+
+    This is especially sharp with documents that contain OP-historical material: previous sessions where you stated constraints, made decisions, or rejected proposals. Those statements were true in that context. The current context may be different.
+
+    **Fix:** Explicitly promote the elements of an EXT document you want to use.
+
+    | Treats EXT as decision | Promotes EXT explicitly |
+    |---|---|
+    | (Claude cites the document repeatedly) | "Use the auth model from that document." |
+    | "The document covers this." | "The rate-limiting rule from section 3 — that's the constraint." |
+    | (No explicit action taken) | "Ignore the deployment section — that's outdated." |
+
+    The act of promotion is what converts EXT relevance into OP decision.
+  </Accordion>
+
+  <Accordion title="Recency overrides prior decisions">
+    In a long session, a more recent phrasing of a concept starts overriding an earlier, explicitly-approved decision. The recent version is fluent, fits the current context, and appears in the last few turns — so it feels like the current position. But it may not be.
+
+    This is the failure the anti-recency rule is designed to prevent. The latest formulation wins only if it is explicitly an OP correction, revocation, or decision. A recent restatement of a concept that was not marked as a correction does not override a prior OP decision — but conversational inertia can make it feel like it does.
+
+    The frame may not catch every case of this in a long session. The operator is the last line of defense.
+
+    **Fix:** When you notice the session has drifted toward a recent phrasing that differs from an earlier decision, make the relationship explicit.
+
+    - *"The earlier version was right — discard what we've been exploring."* — This is an OP correction. The earlier decision is restored.
+    - *"I want to reconsider the approach from earlier."* — This is an OP hypothesis. Nothing is overridden yet. The earlier decision stays Crystallized until you explicitly close it.
+
+    If you are not sure whether a drift has happened, ask for an orientation snapshot: "What have we actually decided on the architecture?" The snapshot will surface the Crystallized elements and any Tracked material in motion.
+  </Accordion>
+
+  <Accordion title="Resuming without re-grounding">
+    You continue a session after a break — or you import a previous conversation as context — and proceed as if all prior decisions are still active. But the context has shifted. The frame reconstructs its state from what is in the conversation, and OP-historical material in imported content carries high weight but is not equivalent to OP-current.
+
+    This creates a specific risk: a decision that was valid in the previous session's scope may not apply in the current scope. A constraint you had set may have been superseded by work you did outside this conversation. A direction you were exploring may have been closed.
+
+    **Fix:** Before continuing structural work in a resumed session, ask Claude to surface the current state — what is Crystallized, what is in motion, what has flags. Then explicitly reconfirm the decisions that will ground new structural work.
+
+    Treat the resumed session as if you are importing context as EXT and reconfirming from scratch. Any OP-historical statement that will ground a new decision should be restated as OP-current before proceeding.
+  </Accordion>
+
+  <Accordion title="Skipping the custom instruction">
+    You install the skill file but do not add `CUSTOM_INSTRUCTION.txt` to `Instructions for Claude` in Claude Desktop. The skill is present but not anchored.
+
+    Without the custom instruction, Claude may treat the skill as ordinary reference material — summarizing and compressing it before applying it, rather than reading it verbatim in full. The skill's own first instruction is "execute full-read: mapping strictly mandatory. No distillation allowed." That instruction is in the skill file. But without the custom instruction anchor, Claude has no persistent signal to apply it as a full working frame rather than a document to reference.
+
+    The result is a session that looks like it has Shaping Frame active but does not have the frame properly initialized. Epistemic tracking may be partial, inconsistent, or absent.
+
+    **Fix:** Always add `CUSTOM_INSTRUCTION.txt` to `Instructions for Claude`.
+
+    In Claude Desktop: `initials → Settings → Instructions for Claude`. Paste the full contents of `CUSTOM_INSTRUCTION.txt`. This is required — not optional. The skill and the custom instruction are two parts of the same operating model.
+  </Accordion>
+
+  <Accordion title="Demanding output on every turn">
+    You expect the frame to emit tracking blocks, dogana checkpoints, or snapshot outputs on every Claude response. When turns pass without any frame output, you interpret that as the frame not working.
+
+    This is a misread of how the frame operates. The frame is active every turn — it is evaluating weight, tracking state, and monitoring thresholds continuously. But it emits output only when something meaningful is crossing a threshold or when a surface trigger fires. Silence is normal. Silence is the frame working correctly.
+
+    If the frame emits output on every turn, that is a signal that either too many elements are in motion (the session is tracking more than it can resolve), or surface triggers are firing unnecessarily (you are asking for orientation when the state is already clear).
+
+    **Fix:** Trust the silence. The frame is working even when it is not emitting output. If you want to verify the current state, ask explicitly: "Where do we stand?" or "What has been decided?" This fires a surface trigger deliberately and produces a snapshot without requiring the frame to interrupt every response.
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+Most of these anti-patterns share a root cause: conflating OP intent with conversational momentum. The frame's job is to make that distinction explicit. Your job is to make your decisions explicit.
+</Note>
+
+<CardGroup cols={2}>
+  <Card title="Working Sessions" icon="play" href="/guides/working-sessions">
+    A practical walkthrough for running a complete working session with Shaping Frame active.
+  </Card>
+  <Card title="Thresholds" icon="gauge-high" href="/concepts/thresholds">
+    How the frame defines and detects epistemic threshold crossings during a session.
+  </Card>
+</CardGroup>

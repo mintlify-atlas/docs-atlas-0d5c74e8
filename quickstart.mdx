@@ -1,47 +1,83 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get started with Shaping Frame in Claude Desktop"
+sidebarTitle: "Quickstart"
+description: "Install the Shaping Frame skill and add the custom instruction anchor to Claude Desktop. Takes under five minutes."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+This guide walks you through installing Shaping Frame in Claude Desktop and activating it as a full active frame. By the end, you will have uploaded `shaping-frame.skill` to the Skills panel and pasted the `CUSTOM_INSTRUCTION.txt` anchor into your Instructions for Claude — the two steps required for the frame to run at full strength, every session, from turn one.
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
+  <Step title="Download the files">
+    Go to the [Shaping Frame GitHub repository](https://github.com/XxYouDeaDPunKxX/shaping-frame-for-claude) and download both files:
 
-    ```bash
-    npm install your-package
-    ```
+    - `shaping-frame.skill` — the skill archive containing the full frame and reference files
+    - `CUSTOM_INSTRUCTION.txt` — the anchor that must be added to your Claude Desktop instructions separately
+
+    Keep both files accessible. You will need them in the next steps.
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
+  <Step title="Open Claude Desktop Skills">
+    In Claude Desktop, open the Skills management area:
 
-    ```bash
-    your-cli init
+    ```text
+    + → Skills → Manage Skills
     ```
+
+    Click the `+` icon in the Claude Desktop interface, select **Skills**, then **Manage Skills**. This opens the **Customize → Skills** area where you can upload and manage skill archives.
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
+  <Step title="Upload the skill">
+    In the Skills panel, click the `+` button in the center column. From the menu that appears, choose:
 
-    ```bash
-    your-cli start
+    ```text
+    + Create skill → Upload a skill
     ```
+
+    Upload `shaping-frame.skill` using this path. **Do not use the public skills directory** — navigate through the Upload path specifically. The public skills directory will not contain this skill.
+
+    Once uploaded, the skill archive is available to Claude during your working sessions.
+  </Step>
+  <Step title="Add the custom instruction">
+    Navigate to your Claude Desktop settings:
+
+    ```text
+    initials → Settings → Instructions for Claude
+    ```
+
+    Open `CUSTOM_INSTRUCTION.txt` in a text editor, copy the full contents, and paste them into the **Instructions for Claude** field.
+
+    This step is required. The custom instruction acts as the always-on anchor that tells Claude to execute a full read of the skill and hold the frame active as a working posture — not just a reference to consult once and summarize.
+  </Step>
+  <Step title="Verify activation">
+    Start a new conversation in Claude Desktop. The frame is now active.
+
+    Shaping Frame operates silently every turn, tracking source classes and weight states from the moment the session begins. It does not emit tracking output on routine turns — silence is normal. The frame surfaces when material crosses a threshold or when a surface trigger fires.
+
+    No confirmation message is required. If both the skill and the custom instruction are in place, the frame is running.
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+<Warning>
+  The custom instruction step is required. Skipping it means Claude may compress or summarize the skill rather than running it as an active cognitive frame. A summarized version of the skill will not apply full-read behavior, checkpoint logic, or threshold tracking correctly.
+</Warning>
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
+## What happens next
+
+From turn one of your first session, Shaping Frame tracks the source class and weight state of every element entering the conversation. Operator decisions (`OP`) carry maximum weight and crystallize immediately. External material you import (`EXT`) starts high but as a candidate — relevant because you brought it, not approved because it is present. Claude-generated proposals (`AI`) and model priors (`MP`) start low and rise only when you explicitly validate them.
+
+The frame does not emit output on every turn. Most turns will look like a normal Claude conversation. The frame is working in the background, and it will surface when something is crossing a structural boundary without your approval — when a proposal is becoming a premise, a premise is becoming a constraint, or an AI-generated element is starting to act like operator intent.
+
+## First session tips
+
+<Tip>
+  In your first session, try importing an external document — paste in a transcript, a reference document, or a note you brought from elsewhere. Then make a decision that references it. Notice how the frame distinguishes between the document being **relevant** (you brought it, so it has real weight) and the document being **decided** (you explicitly approved a direction from it). That distinction — relevance is not approval — is the core of how Shaping Frame prevents silent promotion of external material into structural decisions.
 </Tip>
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Core Concepts" icon="book-open" href="/concepts/epistemic-weight">
+    Dive into the weight states, threshold crossings, and checkpoint logic that power the frame.
+  </Card>
+  <Card title="Source Classes" icon="tag" href="/concepts/source-classes">
+    Understand how OP, EXT, AI, MP, and DSK carry different authority — and why that separation matters.
+  </Card>
+</CardGroup>

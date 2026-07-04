@@ -1,0 +1,79 @@
+{
+  "projectType": "general",
+  "projectName": "Shaping Frame",
+  "projectDescription": "A cognitive layer for Claude that tracks epistemic weight during working sessions — surfacing when unvalidated hypotheses, model priors, or AI-generated proposals are silently becoming decisions.",
+  "theme": "luma",
+  "primaryColor": "#5B4FBE",
+  "lightColor": "#EDE9FF",
+  "darkColor": "#2D2560",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/epistemic-weight",
+              "concepts/source-classes",
+              "concepts/weight-states",
+              "concepts/thresholds"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/skill-package",
+              "reference/custom-instruction",
+              "reference/surface-behavior",
+              "reference/inline-tags",
+              "reference/pre-write-gate",
+              "reference/decontamination"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/working-sessions",
+              "guides/long-sessions",
+              "guides/anti-patterns"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Epistemic weight tracking across five source classes (OP, EXT, AI, MP, DSK)",
+    "Five weight states (Spark, Candidate, Tracked, Crystallized, Rejected) with transversal flags",
+    "Cognitive checkpoint (dogana) that fires at ten defined threshold crossings",
+    "Surface snapshot format for orientation moments and phase changes",
+    "Anti-recency rule preventing conversational inertia from masquerading as decisions",
+    "Pre-write gate to prevent unvetted AI/MP/EXT material from entering structural artifacts",
+    "Decontamination pass to strip conversational residue from persistent output",
+    "Compact inline tagging ([AI], [MP], [EXT], [DSK], [~]) for minimal-friction weight annotation",
+    "Three-level checkpoint intensity from silent tracking to hard stop",
+    "Custom instruction anchor that forces full-read behavior in Claude Desktop"
+  ],
+  "publicApiSurface": [
+    "shaping-frame.skill (Claude Desktop skill package)",
+    "CUSTOM_INSTRUCTION.txt (custom instruction anchor for Instructions for Claude)",
+    "SKILL.md — full operating frame (verbatim read required)",
+    "references/frame.md — compact reminder, read at session start and on drift risk",
+    "references/dogana.md — checkpoint checklist, read when a threshold fires",
+    "references/snapshot.md — surface snapshot format, emitted on surface triggers",
+    "Source classes: OP, EXT, AI, MP, DSK",
+    "Weight states: Spark, Candidate, Tracked, Crystallized, Rejected",
+    "Transversal flags: Quarantined, Contaminated, Needs verification",
+    "Checkpoint levels: 0 (silent), 1 (inline tag), 2 (dogana block), 3 (stop)",
+    "Inline tags: [AI], [MP], [EXT], [DSK], [~]",
+    "Threshold vocabulary: proposal→premise, premise→constraint, constraint→decision, decision→artifact, draft→spec, provisional phrase→naming, local compromise→architecture, AI/MP/EXT→implicit OP, factual hypothesis→technical foundation"
+  ]
+}

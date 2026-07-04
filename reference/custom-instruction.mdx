@@ -1,0 +1,53 @@
+---
+title: "Custom Instruction Anchor for Shaping Frame"
+sidebarTitle: "Custom Instruction"
+description: "The CUSTOM_INSTRUCTION.txt file anchors Shaping Frame as an always-on operating posture. Learn why it is required and how to add it to Claude Desktop."
+---
+
+The custom instruction is a required companion to the skill package. Without it, Claude may treat the `.skill` file as ordinary reference material — reading it casually, summarizing it before applying it, or not treating it as an active operating frame at all. The instruction forces full-read behavior and establishes the skill as the active cognitive posture for working sessions, not a document to consult on request.
+
+## The instruction text
+
+Add the following text exactly as written to Instructions for Claude:
+
+```text
+[VERBATIM DIRECTIVE — TARGET: SHAPING-FRAME SKILL]
+Execute full-read: mapping strictly mandatory. No distillation allowed.
+Do not summarize the skill before applying it.
+This is a structural requirement for the skill to function properly.
+
+Always use the Shaping Frame skill as an active operating frame during working
+sessions.
+
+Surface only when something crosses a threshold or when the conversation needs
+a snapshot. Do not emit unnecessary tracking blocks.
+```
+
+## Why this is required
+
+Claude Desktop does not provide a hook layer for skills. There is no automatic pre-write interception and no persistent runtime guard that activates the skill before each response. The skill package is available to Claude, but nothing in the hosting environment forces Claude to read and apply it as a full frame rather than a normal reference.
+
+The custom instruction fills that gap. It acts as the always-on floor that establishes three things: that the skill must be read verbatim without compression, that the frame is active during working sessions rather than consulted on demand, and that output surfaces only when something actually crosses a threshold. Without this anchor, the skill's verbatim read requirement — which is structural, not stylistic — has no enforcement point.
+
+## How to add it
+
+1. Open Claude Desktop and click your initials in the corner
+2. Go to **Settings → Instructions for Claude**
+3. Paste the full contents of `CUSTOM_INSTRUCTION.txt`
+4. Save
+
+The instruction takes effect immediately for new conversations. Existing conversations are not affected retroactively.
+
+## What the instruction does
+
+The instruction enforces three behaviors:
+
+**Full-read of the skill.** Claude must read `SKILL.md` completely before applying it. No distillation, no compression, no paraphrased summary substituted for the original. This is required because the skill's threshold logic, weight state rules, and anti-recency rule depend on precise distinctions that do not survive lossy summarization.
+
+**Active frame posture.** The skill is not a lookup reference. It is the operating frame for the entire working session. Claude applies it from the first turn, tracks weight across every turn, and does not wait for an explicit command to activate it.
+
+**Minimal surface.** Output is emitted only when a threshold is crossed or a surface trigger fires. The instruction explicitly prohibits unnecessary tracking blocks. The frame is active every turn, but visible output is the exception, not the default.
+
+<Warning>
+If you skip this step, the skill may not function correctly. Claude may treat the `.skill` file as a normal reference document and summarize it before applying it, which breaks the epistemic tracking behavior.
+</Warning>

@@ -1,0 +1,91 @@
+---
+title: "Running a Working Session with Shaping Frame"
+sidebarTitle: "Working Sessions"
+description: "A practical walkthrough for running a complex Claude working session with Shaping Frame active — from opening a session to approving a decision and writing an artifact."
+---
+
+This guide walks through a complete working session with Shaping Frame active. The frame changes how you interact with Claude: instead of letting ideas accumulate silently, you approve them explicitly. The result is a session where every decision that enters a structural artifact has a clear origin — not accumulated through conversational momentum, but marked by you.
+
+## Opening a session
+
+When you start a conversation with Shaping Frame installed and the custom instruction anchor active, the frame is running from turn one. You do not need to invoke it explicitly or type a special command to enable it.
+
+If you bring in external material — an EXT source such as a document, transcript, uploaded file, or a conversation exported from another session — the frame tags it as **Candidate** weight. That material is relevant because you brought it, but relevance is not the same as approval. It has not been decided yet. The fan is still open.
+
+This distinction matters immediately: a document you import on turn one carries high contextual weight, but it does not automatically become a decision. It becomes a decision when you explicitly promote it.
+
+## Shaping phase
+
+During ideation, the frame tracks the epistemic weight of material as it moves through the conversation. Each source class starts at a different weight:
+
+- **[AI] — In-session generated output.** Ideas Claude generates in response to your prompts start at low weight, in Spark or Candidate state. They are proposals, not decisions.
+- **[MP] — Model prior.** Assumptions Claude makes from training — "the standard approach", "best practice", "typically" — start low and are Quarantined if they begin grounding a structural decision. They are not verified facts about your system.
+- **[EXT] — External material.** Material you import starts at high weight, Candidate state. You brought it, so it is relevant. But you have not approved it yet.
+- **OP — Operator.** Your instructions, corrections, and decisions carry maximum weight and crystallize immediately. OP is never tagged — it is the reference frame everything else is measured against.
+
+**Worked example:** You ask Claude to propose an architecture for a new service. Claude proposes a three-tier design with a gateway layer, a processing layer, and a storage layer. That proposal is `[AI]` at Candidate state — Claude generated it in response to your prompt, and you have not approved it.
+
+You say: *"Let's go with that."* — The proposal is now **Crystallized**. It is an OP decision and will be treated as a constraint going forward.
+
+You say: *"Maybe, that could work."* — The proposal stays **Candidate**. The frame does not advance its state. "Maybe" is not a decision.
+
+## When the frame surfaces
+
+The frame operates every turn but emits output only when something meaningful is happening. Silence is normal — it means the frame is tracking but nothing has crossed a threshold. When it does surface, the event is one of three kinds:
+
+- **A surface trigger fires.** You change direction or scope, import new EXT material, ask where you are ("what have we decided?", "where do we stand?"), open a new artifact, or the session shifts phase (shaping → decision → writing). When this happens, the frame emits a compact snapshot of active Tracked elements before responding to content.
+- **A threshold crossing is detected.** An AI proposal that has been cited multiple times starts behaving like a constraint. A model prior is being used as the foundation of a structural decision. EXT material is being treated as operator intent. When this happens, the frame emits a dogana block — a compact checkpoint that makes the crossing visible and asks you to decide.
+- **The pre-write gate fires.** Before Claude writes a spec, creates a reusable document, or modifies a structural artifact, the gate evaluates whether all grounding material is Crystallized. If something unvetted would enter the structure, the frame stops and surfaces.
+
+The output order when multiple events occur: snapshot → dogana (if triggered) → content.
+
+## Approving decisions
+
+Only you — the operator — can crystallize material. The frame distinguishes between genuine decisions and conversational movement, and it is strict about this distinction because the most common failure mode is treating conversational momentum as approval.
+
+These actions crystallize material:
+
+| Action | Result |
+|---|---|
+| *"Yes, use that."* | Crystallized — explicit yes |
+| *"That's the direction."* | Crystallized — direct decision |
+| *"Use the auth model from that document."* | Crystallized — explicit EXT promotion |
+| *"No — use the earlier version."* | Rejects recent, crystallizes prior — OP correction |
+| *"Option A."* (after a fan of alternatives) | Crystallized — OP selection |
+
+These actions do not crystallize material:
+
+| Action | Result |
+|---|---|
+| *"Maybe."* | Stays Candidate — OP hypothesis |
+| *"That could work."* | Stays Candidate — ambiguous, not a decision |
+| *"I think option A is better."* | Stays Candidate — OP hypothesis |
+| *"Interesting."* | No state change |
+
+The distinction matters most when writing artifacts. If material is Candidate when Claude reaches the pre-write gate, it cannot enter the structure without your explicit approval.
+
+## Writing an artifact
+
+Before Claude writes a spec, creates a file, or produces a reusable document, the pre-write gate fires. The gate evaluates four categories:
+
+- **All grounding material Crystallized** → Claude writes.
+- **Mixed, but non-structural elements in motion** → Claude emits a compact dossier of what is still moving, then writes the parts that are Crystallized.
+- **AI, MP, or EXT material unvetted in architecture, rules, or spec** → Claude stops and surfaces. You decide what to crystallize before it proceeds.
+- **Unverified technical facts grounding decisions** → Flagged as Needs verification. The element is frozen — it cannot advance state or enter the artifact until verified.
+
+The pre-write gate is not the whole skill — the frame operates throughout the session, not just before writes. But it is the moment where the accumulated weight of everything you have discussed becomes a constraint on output.
+
+If the gate stops Claude, that is not a failure. It means unvetted material was about to become structural. Decide what to crystallize, and the write proceeds.
+
+<Tip>
+The most effective working posture is to be explicit about your decisions. "Let's go with option A" is a decision. "Option A sounds interesting" is not. The more explicit your approvals, the less the frame needs to interrupt you.
+</Tip>
+
+<CardGroup cols={2}>
+  <Card title="Long Sessions" icon="clock" href="/guides/long-sessions">
+    Managing epistemic weight across long or fast-moving sessions, declared limits, and practical strategies.
+  </Card>
+  <Card title="Pre-Write Gate" icon="shield-check" href="/reference/pre-write-gate">
+    How the pre-write gate evaluates grounding material before Claude writes structural artifacts.
+  </Card>
+</CardGroup>
